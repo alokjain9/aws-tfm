@@ -1,14 +1,14 @@
-pipeline {
-  parameters {
-    password (name: 'AWS_ACCESS_KEY_ID')
-    password (name: 'AWS_SECRET_ACCESS_KEY')
+  // Jenkinsfile
+String credentialsId = 'awsCredentials'
+
+try {
+  stage('checkout') {
+    node {
+      cleanWs()
+      checkout scm
+    }
   }
-  environment {
-    TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
-    TF_IN_AUTOMATION = 'true'
-    AWS_ACCESS_KEY_ID = "${params.AWS_ACCESS_KEY_ID}"
-    AWS_SECRET_ACCESS_KEY = "${params.AWS_SECRET_ACCESS_KEY}"
-  }
+  
   stages {
     stage('Terraform Init') {
       steps {
@@ -37,4 +37,3 @@ bundle exec rake spec || true
       }
     }
   }
-}
